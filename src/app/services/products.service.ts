@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {delay, Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {catchError, delay, Observable, retry, throwError} from "rxjs";
 import {IProduct} from "../models/product";
+import {ErrorService} from "./error.service";
 
 @Injectable({
   // Сервис будет автоматически зарегистрирован в корневом модуле
@@ -9,7 +10,10 @@ import {IProduct} from "../models/product";
 })
 
 export class ProductService {
-  constructor(private  http: HttpClient) {
+  constructor(
+    private  http: HttpClient,
+    private errorService: ErrorService
+  ) {
   }
 
   getAll(): Observable<IProduct[]>{
@@ -21,7 +25,16 @@ export class ProductService {
       })
     }).pipe(
       // Реализация программной задержки на запросе
-      delay(2000)
+      delay(2000),
+      // Повторить запрос 2 раза в случае, если он выполнен с ошибкой
+      retry(2),
+      catchError(this.errorHandler.bind(this))
     )
+  }
+
+  // Приватный обработчик ошибок для запроса
+  private errorHandler(error: HttpErrorResponse) {
+    this.errorService.handle(error.message);
+    return throwError(()=> error.message)
   }
 }

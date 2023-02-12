@@ -1,3 +1,4 @@
+<app-global-error></app-global-error>
 <div class="max-w-2xl container mx-auto pt-5">
   <!--Pipes представляют специальные инструменты, которые позволяют форматировать отображаемые значения-->
   <h1 class="font-bold mb-2 text-center text-lg">{{title | titlecase}}</h1>
@@ -5,10 +6,17 @@
   <p *ngIf="loading" class="text-center text-lg">Loading...</p>
 
 <!-- Формирование данных на основе массива -->
+<!-- 1подход -->
+<!--  <app-product-->
+<!--    *ngFor="let product of products; let i = index"-->
+<!--    [product]="product"-->
+<!--  >-->
+<!--  </app-product>-->
+
+<!-- 2 подход (пропускаем стрим products$ через пайп async) -->
   <app-product
-    *ngFor="let product of products; let i = index"
+    *ngFor="let product of products$ | async; let i = index"
     [product]="product"
   >
   </app-product>
-
 </div>
