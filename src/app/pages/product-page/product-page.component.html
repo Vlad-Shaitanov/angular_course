@@ -1,0 +1,42 @@
+<!--Pipes представляют специальные инструменты, которые позволяют форматировать отображаемые значения-->
+<h1 class="font-bold mb-2 text-center text-lg">{{title | titlecase}}</h1>
+
+<input
+  type="text"
+  class="mb-2 border py-2 px-4 w-full"
+  placeholder="Search product"
+  [(ngModel)]="term"
+>
+
+<p *ngIf="loading" class="text-center text-lg">Loading...</p>
+
+<!-- Формирование данных на основе массива -->
+<!-- 1подход -->
+<!--  <app-product-->
+<!--    *ngFor="let product of products; let i = index"-->
+<!--    [product]="product"-->
+<!--  >-->
+<!--  </app-product>-->
+
+<!-- 2 подход (пропускаем стрим products$ через пайп async) -->
+<div *ngIf="productsService.products">
+  <app-product
+    *ngFor="let product of productsService.products | filterProducts: term; let i = index"
+    [product]="product"
+  >
+  </app-product>
+</div>
+
+<app-modal
+  title= "Create new product"
+  *ngIf="modalService.isVisible$ | async"
+>
+  <app-create-product></app-create-product>
+</app-modal>
+
+<button
+  class="rounded-full bg-red-700 text-white fixed right-5 bottom-5 py-5 px-4"
+  (click)="modalService.open()"
+>
+  Create
+</button>
