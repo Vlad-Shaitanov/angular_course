@@ -30,7 +30,17 @@
     </app-product>
   </div>
 
-  <app-modal title= "Create new product">
+  <app-modal
+    title= "Create new product"
+    *ngIf="modalService.isVisible$ | async"
+  >
     <app-create-product></app-create-product>
   </app-modal>
+
+  <button
+    class="rounded-full bg-red-700 text-white fixed right-5 bottom-5 py-5 px-4"
+    (click)="modalService.open()"
+  >
+  Create
+  </button>
 </div>

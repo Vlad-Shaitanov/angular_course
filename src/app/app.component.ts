@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IProduct} from "./models/product";
 import {ProductService} from "./services/products.service";
 import {Observable, tap} from "rxjs";
+import {ModalService} from "./services/modal.service";
 
 
 @Component({
@@ -18,7 +19,10 @@ export class AppComponent implements OnInit{
   products$: Observable<IProduct[]> // 2 подход (работа со стримом)
   term = '' // Для поиска
 
-  constructor(private productsService: ProductService) {
+  constructor(
+    private productsService: ProductService,
+    public modalService: ModalService
+  ) {
   }
 
   // Функция выполнится при инициализации компонента
