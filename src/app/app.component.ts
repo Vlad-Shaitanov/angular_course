@@ -16,11 +16,11 @@ export class AppComponent implements OnInit{
   title = 'Angular Course';
   loading = false
   // products: IProduct[] = []  1 лодход
-  products$: Observable<IProduct[]> // 2 подход (работа со стримом)
+  // products$: Observable<IProduct[]> // 2 подход (работа со стримом)
   term = '' // Для поиска
 
   constructor(
-    private productsService: ProductService,
+    public productsService: ProductService,
     public modalService: ModalService
   ) {
   }
@@ -30,16 +30,14 @@ export class AppComponent implements OnInit{
     this.loading = true;
 
     // 1 подход
-    // this.productsService.getAll().subscribe(products => {
-    //   // Записываем значение
-    //   this.products = products;
-    //   this.loading = false;
-    // })
+    this.productsService.getAll().subscribe(() => {
+      this.loading = false;
+    })
 
     // 2 подход (работа со стримом)
-    this.products$ = this.productsService.getAll().pipe(
-      // Оператор tap никак не трансформирует данные и просто добавляет функционал
-      tap(()=> this.loading = false)
-    )
+    // this.products$ = this.productsService.getAll().pipe(
+    //   // Оператор tap никак не трансформирует данные и просто добавляет функционал
+    //   tap(()=> this.loading = false)
+    // )
   }
 }
