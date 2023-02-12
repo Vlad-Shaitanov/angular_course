@@ -16,6 +16,7 @@ export class AppComponent implements OnInit{
   loading = false
   // products: IProduct[] = []  1 лодход
   products$: Observable<IProduct[]> // 2 подход (работа со стримом)
+  term = '' // Для поиска
 
   constructor(private productsService: ProductService) {
   }
